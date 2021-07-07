@@ -1,6 +1,7 @@
 package com.dal.controller;
 
 import com.dal.domain.BoardVO;
+import com.dal.domain.Criteria;
 import com.dal.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -20,10 +21,16 @@ public class BoardController {
 
     private final BoardService service;
 
+//    @GetMapping("/list")
+//    public void list(Model model) {
+//        log.info("List");
+//        model.addAttribute("list", service.getList());
+//    }
+
     @GetMapping("/list")
-    public void list(Model model) {
-        log.info("List");
-        model.addAttribute("list", service.getList());
+    public void list(Criteria cri, Model model) {
+        log.info("list : " + cri);
+        model.addAttribute("list", service.getList(cri));
     }
 
     @GetMapping("/register")

@@ -2,6 +2,7 @@ package com.dal.service;
 
 import com.dal.config.RootConfig;
 import com.dal.domain.BoardVO;
+import com.dal.domain.Criteria;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import org.junit.Test;
@@ -40,7 +41,8 @@ public class BoardServiceTests {
 
     @Test
     public void testGetList() {
-        service.getList().forEach(log::info);
+//        service.getList().forEach(log::info);
+        service.getList(new Criteria(2, 10)).forEach(log::info);
     }
 
     @Test

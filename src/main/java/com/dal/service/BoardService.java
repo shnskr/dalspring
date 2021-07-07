@@ -1,6 +1,7 @@
 package com.dal.service;
 
 import com.dal.domain.BoardVO;
+import com.dal.domain.Criteria;
 
 import java.util.List;
 
@@ -14,5 +15,7 @@ public interface BoardService {
 
     boolean remove(Long bno);
 
-    List<BoardVO> getList();
+//    List<BoardVO> getList();
+
+    List<BoardVO> getList(Criteria cri);
 }
