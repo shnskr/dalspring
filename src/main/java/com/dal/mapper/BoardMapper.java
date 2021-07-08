@@ -21,4 +21,6 @@ public interface BoardMapper {
     int delete(Long bno);
 
     int update(BoardVO board);
+
+    int getTotalCount(Criteria cri);
 }
