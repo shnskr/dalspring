@@ -214,7 +214,7 @@
                return false;
            }
 
-           searchForm.find("input[name='pageNum']").val("1");ㅣ
+           searchForm.find("input[name='pageNum']").val("1");
            e.preventDefault();
 
            searchForm.submit();
