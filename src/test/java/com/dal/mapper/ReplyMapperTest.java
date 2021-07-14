@@ -1,6 +1,7 @@
 package com.dal.mapper;
 
 import com.dal.config.RootConfig;
+import com.dal.domain.Criteria;
 import com.dal.domain.ReplyVO;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
 import java.util.stream.IntStream;
 
 // SpringRunner.class와 SpringJUnit4ClassRunner.class는 똑같다
@@ -69,5 +71,14 @@ public class ReplyMapperTest {
         int count = mapper.update(vo);
 
         log.info("UPDATE COUNT : " + count);
+    }
+
+    @Test
+    public void testList() {
+        Criteria cri = new Criteria();
+
+        List<ReplyVO> replies = mapper.getListWithPaging(cri, bnoArr[0]);
+
+        replies.forEach(log::info);
     }
 }
