@@ -2,6 +2,7 @@ package com.dal.mapper;
 
 import com.dal.domain.BoardVO;
 import com.dal.domain.Criteria;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface BoardMapper {
 
     void insert(BoardVO board);
 
-    void insertSelectKey(BoardVO board);
+    Integer insertSelectKey(BoardVO board);
 
     BoardVO read(Long bno);
 
@@ -23,4 +24,6 @@ public interface BoardMapper {
     int update(BoardVO board);
 
     int getTotalCount(Criteria cri);
+
+    void updateReplyCnt(@Param("bno") Long bno, @Param("amount") int amount);
 }

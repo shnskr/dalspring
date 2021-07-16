@@ -3,10 +3,12 @@ package com.dal.service;
 import com.dal.domain.Criteria;
 import com.dal.domain.ReplyPageDTO;
 import com.dal.domain.ReplyVO;
+import com.dal.mapper.BoardMapper;
 import com.dal.mapper.ReplyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,10 +18,15 @@ import java.util.List;
 public class ReplyServiceImpl implements ReplyService{
 
     private final ReplyMapper mapper;
+    private final BoardMapper boardMapper;
 
+    @Transactional
     @Override
     public int register(ReplyVO vo) {
         log.info("register........." + vo);
+
+        boardMapper.updateReplyCnt(vo.getBno(), 1);
+
         return mapper.insert(vo);
     }
 
@@ -35,9 +42,15 @@ public class ReplyServiceImpl implements ReplyService{
         return mapper.update(vo);
     }
 
+    @Transactional
     @Override
     public int remove(Long rno) {
         log.info("remove........." + rno);
+
+        ReplyVO vo = mapper.read(rno);
+
+        boardMapper.updateReplyCnt(vo.getBno(), -1);
+
         return mapper.delete(rno);
     }
 
