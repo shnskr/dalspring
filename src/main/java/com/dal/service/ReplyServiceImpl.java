@@ -1,6 +1,7 @@
 package com.dal.service;
 
 import com.dal.domain.Criteria;
+import com.dal.domain.ReplyPageDTO;
 import com.dal.domain.ReplyVO;
 import com.dal.mapper.ReplyMapper;
 import lombok.RequiredArgsConstructor;
@@ -44,5 +45,10 @@ public class ReplyServiceImpl implements ReplyService{
     public List<ReplyVO> getList(Criteria cri, Long bno) {
         log.info("get Reply List of a Board " + bno);
         return mapper.getListWithPaging(cri, bno);
+    }
+
+    @Override
+    public ReplyPageDTO getListPage(Criteria cri, Long bno) {
+        return new ReplyPageDTO(mapper.getCountByBno(bno), mapper.getListWithPaging(cri, bno));
     }
 }

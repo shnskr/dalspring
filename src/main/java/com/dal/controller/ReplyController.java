@@ -1,6 +1,7 @@
 package com.dal.controller;
 
 import com.dal.domain.Criteria;
+import com.dal.domain.ReplyPageDTO;
 import com.dal.domain.ReplyVO;
 import com.dal.service.ReplyService;
 import lombok.RequiredArgsConstructor;
@@ -40,12 +41,12 @@ public class ReplyController {
     @GetMapping(value = "/pages/{bno}/{page}",
             produces = {MediaType.APPLICATION_XML_VALUE,
                         MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public ResponseEntity<List<ReplyVO>> getList(@PathVariable("bno") Long bno,
-                                                 @PathVariable("page") int page) {
-        log.info("getList................");
+    public ResponseEntity<ReplyPageDTO> getList(@PathVariable("bno") Long bno,
+                                                         @PathVariable("page") int page) {
         Criteria cri = new Criteria(page, 10);
-        log.info(cri);
-        return new ResponseEntity<>(service.getList(cri, bno), HttpStatus.OK);
+        log.info("get Reply List bno : " + bno);
+        log.info("cri : " + cri);
+        return new ResponseEntity<>(service.getListPage(cri, bno), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{rno}",
