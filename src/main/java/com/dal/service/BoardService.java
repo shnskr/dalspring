@@ -1,5 +1,6 @@
 package com.dal.service;
 
+import com.dal.domain.BoardAttachVO;
 import com.dal.domain.BoardVO;
 import com.dal.domain.Criteria;
 
@@ -20,4 +21,6 @@ public interface BoardService {
     List<BoardVO> getList(Criteria cri);
 
     int getTotal(Criteria cri);
+
+    List<BoardAttachVO> getAttachList(Long bno);
 }

@@ -1,15 +1,21 @@
 package com.dal.controller;
 
+import com.dal.domain.BoardAttachVO;
 import com.dal.domain.BoardVO;
 import com.dal.domain.Criteria;
 import com.dal.domain.PageDTO;
 import com.dal.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @Log4j
@@ -45,9 +51,16 @@ public class BoardController {
 
     @PostMapping("/register")
     public String register(BoardVO board, RedirectAttributes rttr) {
+        log.info("=======================");
         log.info("register : " + board);
+        if (board.getAttachList() != null) {
+            board.getAttachList().forEach(log::info);
+        }
+        log.info("=======================");
+
         service.register(board);
         rttr.addFlashAttribute("result", board.getBno());
+
         return "redirect:/board/list";
     }
 
@@ -89,5 +102,12 @@ public class BoardController {
 //        rttr.addAttribute("keyword", cri.getKeyword());
 
         return "redirect:/board/list" + cri.getListLink();
+    }
+
+    @GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity<List<BoardAttachVO>> getAttachList(Long bno) {
+        log.info("getAttachList : " + bno);
+        return new ResponseEntity<>(service.getAttachList(bno), HttpStatus.OK);
     }
 }

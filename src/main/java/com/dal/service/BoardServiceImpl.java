@@ -1,11 +1,14 @@
 package com.dal.service;
 
+import com.dal.domain.BoardAttachVO;
 import com.dal.domain.BoardVO;
 import com.dal.domain.Criteria;
+import com.dal.mapper.BoardAttachMapper;
 import com.dal.mapper.BoardMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,11 +19,23 @@ public class BoardServiceImpl implements BoardService{
 
     private final BoardMapper mapper;
 
+    private final BoardAttachMapper attachMapper;
+
+    @Transactional
     @Override
     public void register(BoardVO board) {
         log.info("register......." + board);
 
         mapper.insertSelectKey(board);
+
+        if (board.getAttachList() == null || board.getAttachList().size() <= 0) {
+            return;
+        }
+
+        board.getAttachList().forEach(attch -> {
+            attch.setBno(board.getBno());
+            attachMapper.insert(attch);
+        });
     }
 
     @Override
@@ -59,5 +74,12 @@ public class BoardServiceImpl implements BoardService{
     public int getTotal(Criteria cri) {
         log.info("get total count");
         return mapper.getTotalCount(cri);
+    }
+
+    @Override
+    public List<BoardAttachVO> getAttachList(Long bno) {
+        log.info("get Attach list by bno : " + bno);
+
+        return attachMapper.findByBno(bno);
     }
 }
