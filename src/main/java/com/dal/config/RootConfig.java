@@ -8,11 +8,14 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan(basePackages = "com.dal.service")
+@ComponentScan(basePackages = { "com.dal.service", "com.dal.task" })
+@EnableScheduling
+
 @MapperScan(basePackages = { "com.dal.mapper" })
 public class RootConfig {
 

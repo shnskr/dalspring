@@ -172,8 +172,7 @@
             var path = encodeURIComponent(liObj.data("path") + "/" + liObj.data("uuid") + "_" + liObj.data("filename"));
 
             if (liObj.data("type")) {
-                // showImage(path.replace(new RegExp(/\\/g), "/"));
-                showImage(path);
+                showImage(path.replace(new RegExp(/\\/g), "/"));
             } else {
                 // download
                 self.location = "/download?fileName=" + path
@@ -186,7 +185,7 @@
             $(".bigPictureWrapper").css("display", "flex").show();
 
             $(".bigPicture")
-                .html("<img src='/display?fileName=" + encodeURI(fileCallPath) + "'>")
+                .html("<img src='/display?fileName=" + fileCallPath + "'>")
                 .animate({width: '100%', height: '100%'}, 1000);
         }
 
