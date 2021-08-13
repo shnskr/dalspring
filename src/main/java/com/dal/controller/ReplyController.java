@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class ReplyController {
 
     // Consumes : Request 데이터 포맷을 정의한다.
     // Produces : Response 데이터 포맷을 정의한다.
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/new",
             consumes = "application/json",
             produces = {MediaType.TEXT_PLAIN_VALUE})
@@ -57,23 +59,24 @@ public class ReplyController {
         return new ResponseEntity<>(service.get(rno), HttpStatus.OK);
     }
 
+    @PreAuthorize("principal.username == #vo.replyer")
     @DeleteMapping(value = "/{rno}",
             produces = {MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<String> remove(@PathVariable("rno") Long rno) {
+    public ResponseEntity<String> remove(@PathVariable("rno") Long rno, @RequestBody ReplyVO vo) {
         log.info("remove : " + rno);
+        log.info("replyer : " + vo.getReplyer());
         return service.remove(rno) == 1
                 ? new ResponseEntity<>("success", HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @PreAuthorize("principal.username == #vo.replyer")
     @RequestMapping(method = {RequestMethod.PUT, RequestMethod.PATCH},
             value = "/{rno}",
             consumes = "application/json",
             produces = {MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<String> modify(@RequestBody ReplyVO vo,
                                          @PathVariable("rno") Long rno) {
-        vo.setRno(rno);
-
         log.info("rno : " + rno);
         log.info("modify : " + vo);
         return service.modify(vo) == 1
